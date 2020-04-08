@@ -21,9 +21,9 @@ class Email(MIMEMultipart):
         )
         self['From'] = SENDER_EMAIL
 
-    def send(self, message):
+    def send(self):
         client = smtplib.SMTP(SMTP_SERVER)
         for email in EMAILS:
-            message['To'] = email
-            client.sendmail(SENDER_EMAIL, email, message.as_string())
+            self['To'] = email
+            client.sendmail(SENDER_EMAIL, email, self.as_string())
         client.quit()
