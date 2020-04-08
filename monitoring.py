@@ -104,8 +104,4 @@ if __name__ == "__main__":
         _html, _plain = module.make_table(module.get_data())
         html += _html
         plain += _plain
-    print(html)
-    print(plain)
-    # with open('test.html', 'w') as file:
-    #     file.write(html)
     message.send()
