@@ -86,6 +86,7 @@ class AptModule(Module):
         for pkg in cache:
             if pkg.is_upgradable:
                 data.append([pkg.name, pkg.installed, pkg.candidate])
+        return data
 
 
 MODULES = Module.__subclasses__()
@@ -103,6 +104,8 @@ if __name__ == "__main__":
         _html, _plain = module.make_table(module.get_data())
         html += _html
         plain += _plain
-    with open('test.html', 'w') as file:
-        file.write(html)
+    print(html)
+    print(plain)
+    # with open('test.html', 'w') as file:
+    #     file.write(html)
     message.send()
