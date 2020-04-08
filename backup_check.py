@@ -2,25 +2,17 @@ import smtplib
 import unittest
 import shutil
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import datetime
 import os
 
 from conf import BACKUP_ROOT_PROD, BACKUP_ROOT_TEST, SERVER_NAME, SENDER_EMAIL, EMAILS
+from mail import Email
 from file_rotation import Database, get_filename_from_datetime
 
 
-class Email(MIMEMultipart):
+class BCEmail(Email):
     backup_root = BACKUP_ROOT_PROD
-
-    def __init__(self, backup_root=BACKUP_ROOT_PROD):
-        super().__init__("alternative")
-        self.timestamp = datetime.datetime.now().replace(microsecond=0)
-        self['Subject'] = "{server} : Rapport de sauvegardes - {date}".format(
-            server=SERVER_NAME,
-            date=self.timestamp
-        )
-        self['From'] = SENDER_EMAIL
+    title = "Rapport de sauvegardes"
 
     def get_database_state(self, database):
         now = datetime.datetime.now()
@@ -88,8 +80,7 @@ class Email(MIMEMultipart):
 
 
 if __name__ == "__main__":
-    # client = smtplib.SMTP(SMTP_SERVER)
-    message = Email()
+    message = BCEmail()
     
     html, plain = message.get_summary()
     html = MIMEText(html, 'html')
@@ -98,22 +89,19 @@ if __name__ == "__main__":
     message.attach(html)
     message.attach(plain)
 
-    for email in EMAILS:
-        message['To'] = email
-        with open('email.eml', 'w') as f:
-            f.write(str(message))
-        # client.sendmail(SENDER_EMAIL, email, message.as_string())
-
-    # client.quit()
+    message.send()
 
 class BackupCheckTest(unittest.TestCase):
     def setUp(self):
-        self.email = Email(BACKUP_ROOT_TEST)
+        self.email = BCEmail(BACKUP_ROOT_TEST)
         self.database = Database('localhost', 'Database2', BACKUP_ROOT_TEST)
         self.now = datetime.datetime.now().replace(microsecond=0)
 
     def tearDown(self):
         shutil.rmtree(BACKUP_ROOT_TEST, ignore_errors=True)
+
+    def test_email(self):
+        self.assertEqual(self.email['Subject'], "localhost : Rapport de sauvegardes - {}".format(self.now))
 
     def _generate_data(self, database, freq, dt):
         open(os.path.join(
