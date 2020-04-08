@@ -1,4 +1,3 @@
-import ipaddress
 import shutil, os
 import unittest
 import pathlib
@@ -36,7 +35,7 @@ class Database:
 
     def __init__(self, ip, name, backup_root=BACKUP_ROOT_PROD):
         self.backup_root = backup_root
-        ipaddress.ip_address(ip)
+        assert isinstance(ip, str)
         self.ip = ip
         assert isinstance(name, str)
         self.name = name
@@ -153,7 +152,7 @@ if __name__ == "__main__":
 
 class FileRotationTest(unittest.TestCase):
     def setUp(self):
-        self.database = Database('176.82.232.1', 'Database1', BACKUP_ROOT_TEST)
+        self.database = Database('localhost', 'Database1', BACKUP_ROOT_TEST)
         RETENTION_POLICIES[self.database.path] = DEFAULT_RETENTION_POLICY
         self.now = datetime.datetime.now().replace(microsecond=0)
         # Generate 365 days of backup
@@ -171,14 +170,12 @@ class FileRotationTest(unittest.TestCase):
         shutil.rmtree(BACKUP_ROOT_TEST, ignore_errors=True)
         
     def test_database_class(self):
-        with self.assertRaises(ValueError):
-            Database('a', 'a', BACKUP_ROOT_TEST)
         with self.assertRaises(AssertionError):
             Database('1.1.1.1', 1, BACKUP_ROOT_TEST)
 
         self.assertEqual(
             self.database.path,
-            os.path.join(BACKUP_ROOT_TEST, '176.82.232.1', 'Database1')
+            os.path.join(BACKUP_ROOT_TEST, 'localhost', 'Database1')
         )
 
         self.assertEqual(get_datetime_from_filename(get_filename_from_datetime(self.now)), self.now)
