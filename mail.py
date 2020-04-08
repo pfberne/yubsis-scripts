@@ -2,6 +2,7 @@
 import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from conf import BACKUP_ROOT_PROD, SERVER_NAME, SENDER_EMAIL, SMTP_SERVER, EMAILS
 
@@ -27,3 +28,15 @@ class Email(MIMEMultipart):
             self['To'] = email
             client.sendmail(SENDER_EMAIL, email, self.as_string())
         client.quit()
+
+    def attach_all(self, html, plain):
+        """
+        Args:
+            html (str)
+            plain (str)
+        """
+        html = MIMEText(html, 'html')
+        plain = MIMEText(plain, 'plain')
+
+        self.attach(html)
+        self.attach(plain)

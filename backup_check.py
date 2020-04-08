@@ -2,7 +2,6 @@
 import smtplib
 import unittest
 import shutil
-from email.mime.text import MIMEText
 import datetime
 import os
 
@@ -84,11 +83,7 @@ if __name__ == "__main__":
     message = BCEmail()
     
     html, plain = message.get_summary()
-    html = MIMEText(html, 'html')
-    plain = MIMEText(plain, 'plain')
-
-    message.attach(html)
-    message.attach(plain)
+    message.attach_all(html, plain)
 
     message.send()
 
