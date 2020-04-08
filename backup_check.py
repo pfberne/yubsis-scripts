@@ -74,7 +74,7 @@ class Email(MIMEMultipart):
             "Etat"
         ]
         headline = "".join(["<th>%s</th>" % header for header in headers])
-        html =  "<table><thead><tr>" + headline + "</tr></thead><tbody>"
+        html =  "<h1>Rapport de sauvegardes</h1><table><thead><tr>" + headline + "</tr></thead><tbody>"
         plain = "| ".join(["{:<30}".format(header) for header in headers]) + "\n"
         plain += "-" * (len(headers) * 32 - 2) + "\n"
         for server in os.listdir(BACKUP_ROOT_PROD):
@@ -109,7 +109,7 @@ if __name__ == "__main__":
 class BackupCheckTest(unittest.TestCase):
     def setUp(self):
         self.email = Email(BACKUP_ROOT_TEST)
-        self.database = Database('1.1.1.1', 'Database2', BACKUP_ROOT_TEST)
+        self.database = Database('localhost', 'Database2', BACKUP_ROOT_TEST)
         self.now = datetime.datetime.now().replace(microsecond=0)
 
     def tearDown(self):
