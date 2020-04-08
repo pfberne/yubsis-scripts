@@ -1,6 +1,10 @@
 import shutil
 import unittest
 import os
+try:
+    import apt
+except ImportError:
+    apt = None
 
 from mail import Email
 from conf import BACKUP_ROOT_PROD, DISK_PARTITIONS
@@ -70,12 +74,11 @@ class DiskModule(Module):
         return data
 
 class AptModule(Module):
-    title = 'Mises à jour'
+    title = 'Mises a jour'
     headers = ['Nom', 'Installé', 'Disponible']
 
     @staticmethod
     def get_data():
-        import apt
         data = []
         cache = apt.Cache()
         cache.update()
