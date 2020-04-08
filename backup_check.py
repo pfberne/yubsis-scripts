@@ -101,7 +101,7 @@ class BackupCheckTest(unittest.TestCase):
         shutil.rmtree(BACKUP_ROOT_TEST, ignore_errors=True)
 
     def test_email(self):
-        self.assertEqual(self.email['Subject'], "localhost : Rapport de sauvegardes - {}".format(self.now))
+        self.assertEqual(self.email['Subject'], "{} : Rapport de sauvegardes - {}".format(SERVER_NAME, self.now))
 
     def _generate_data(self, database, freq, dt):
         open(os.path.join(
