@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 import shutil
 import unittest
 import os
+try:
+    import apt
+except ImportError:
+    apt = None
 
 from mail import Email
 from conf import BACKUP_ROOT_PROD, DISK_PARTITIONS
@@ -75,7 +80,6 @@ class AptModule(Module):
 
     @staticmethod
     def get_data():
-        import apt
         data = []
         cache = apt.Cache()
         cache.update()

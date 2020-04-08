@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import shutil, os
 import unittest
 import pathlib
