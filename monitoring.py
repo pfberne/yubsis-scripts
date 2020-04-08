@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import shutil
 import unittest
 import os
@@ -74,7 +75,7 @@ class DiskModule(Module):
         return data
 
 class AptModule(Module):
-    title = 'Mises a jour'
+    title = 'Mises à jour'
     headers = ['Nom', 'Installé', 'Disponible']
 
     @staticmethod

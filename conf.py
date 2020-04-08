@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 SERVER_NAME = "localhost"
 EMAILS = ['martin@lehoux.net']
 SENDER_EMAIL = "biodoo-prod@yubsis.com"
