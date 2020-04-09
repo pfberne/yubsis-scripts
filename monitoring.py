@@ -31,18 +31,23 @@ class Module:
             plain (str)
         """
         html = "<h1>{}</h1>".format(cls.title)
-        plain = cls.title + '\n'
+        plain = cls.title + '\n' + '='*len(cls.title) + '\n'
         html += "<table><thead><tr>"
         for header in cls.headers:
             html += "<th>{}</th>".format(header)
+            plain += header + ", "
         html += "</tr></thead><tbody>"
+        plain += "\n"
         for line in data:
             assert len(line) == len(cls.headers)
             html += "<tr>"
             for item in line:
                 html += "<td>{}</td>".format(item)
+                plain += item + ", "
             html += "</tr>"
+            plain += "\n"
         html += "</tbody></table>"
+        plain += "\n"
         return html, plain
 
     @staticmethod
@@ -105,3 +110,4 @@ if __name__ == "__main__":
         html += _html
         plain += _plain
     message.send()
+    print(plain)
