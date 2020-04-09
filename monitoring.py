@@ -43,7 +43,7 @@ class Module:
             html += "<tr>"
             for item in line:
                 html += "<td>{}</td>".format(item)
-                plain += item + ", "
+                plain += str(item) + ", "
             html += "</tr>"
             plain += "\n"
         html += "</tbody></table>"
