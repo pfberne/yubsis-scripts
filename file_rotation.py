@@ -31,13 +31,13 @@ def get_filename_from_datetime(dt):
 
 class Database:
     backup_root = BACKUP_ROOT_PROD
-    ip = None
+    server = None
     name = None
 
-    def __init__(self, ip, name, backup_root=BACKUP_ROOT_PROD):
+    def __init__(self, server, name, backup_root=BACKUP_ROOT_PROD):
         self.backup_root = backup_root
-        assert isinstance(ip, str)
-        self.ip = ip
+        assert isinstance(server, str)
+        self.server = server
         assert isinstance(name, str)
         self.name = name
 
@@ -47,7 +47,7 @@ class Database:
 
     @property
     def path(self):
-        return os.path.join(self.backup_root, self.ip, self.name)
+        return os.path.join(self.backup_root, self.server, self.name)
 
     @property
     def daily_path(self):
@@ -63,7 +63,7 @@ class Database:
 
     @property
     def retention_policy(self):
-        return RETENTION_POLICIES.get(self.ip + "/" + self.name) or DEFAULT_RETENTION_POLICY
+        return RETENTION_POLICIES.get(self.server + "/" + self.name) or DEFAULT_RETENTION_POLICY
 
     @property
     def last_weekly_datetime(self):
@@ -160,7 +160,7 @@ class FileRotationTest(unittest.TestCase):
         for days in range(365):
             open(os.path.join(
                 BACKUP_ROOT_TEST,
-                self.database.ip,
+                self.database.server,
                 self.database.name,
                 'daily',
                 get_filename_from_datetime(self.now - datetime.timedelta(days=days))
@@ -186,7 +186,7 @@ class FileRotationTest(unittest.TestCase):
         for days in range(10):
             open(os.path.join(
                 BACKUP_ROOT_TEST,
-                self.database.ip,
+                self.database.server,
                 self.database.name,
                 'weekly',
                 get_filename_from_datetime(self.now - datetime.timedelta(days=days))
@@ -208,7 +208,7 @@ class FileRotationTest(unittest.TestCase):
         for weeks in range(20):
             open(os.path.join(
                 BACKUP_ROOT_TEST,
-                self.database.ip,
+                self.database.server,
                 self.database.name,
                 'weekly',
                 get_filename_from_datetime(self.now - datetime.timedelta(weeks=weeks))
