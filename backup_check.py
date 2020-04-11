@@ -39,7 +39,7 @@ class BCEmail(Email):
             plain (str)
         """
         items = [
-            database.ip,
+            database.server,
             database.name,
             database.last_daily_datetime or "inexistante",
             database.last_weekly_datetime or "inexistante",
@@ -102,7 +102,7 @@ class BackupCheckTest(unittest.TestCase):
     def _generate_data(self, database, freq, dt):
         open(os.path.join(
             BACKUP_ROOT_TEST,
-            database.ip,
+            database.server,
             database.name,
             freq,
             get_filename_from_datetime(dt)
