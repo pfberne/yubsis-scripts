@@ -20,6 +20,7 @@ SMTP_SERVER = "mail.ikoula.fr" # Le serveur mail, pas besoin de modifier
 BACKUP_ROOT_PROD = '/var/backups/odoo' # L'endroit où sont stockés les backups, pas besoin de modifier en temps normal
 BACKUP_ROOT_TEST = '/var/backups/odoo/test' # Un endroit où le script peut effectuer de fausses simulations pour tester
 DISK_PARTITIONS = ['/'] # Les différentes partitions du serveur, normalement pas besoin de changer
+LOG_PATH = "/var/log"
 ```
 
 
