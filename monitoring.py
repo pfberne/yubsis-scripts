@@ -2,13 +2,16 @@
 import shutil
 import unittest
 import os
+import re
+from operator import itemgetter
 try:
     import apt
 except ImportError:
     apt = None
 
 from mail import Email
-from conf import BACKUP_ROOT_PROD, DISK_PARTITIONS
+from conf import BACKUP_ROOT_PROD, DISK_PARTITIONS, LOG_PATH
+
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
@@ -94,6 +97,48 @@ class AptModule(Module):
         return data
 
 
+class LogModule(Module):
+    title = 'Fichiers logs'
+    headers = ['Nom', 'Nombre de fichiers', 'Taille']
+    MAX_ENTRIES = 10
+    MIN_SIZE = 1000
+
+    @staticmethod
+    def get_base_name(filename):
+        reg = r"(.*).log(\.[0-9])?(\.gz)?(\.bz2)?"
+        result = re.match(reg, filename)
+        return result and result.groups()[0]
+
+    @staticmethod
+    def get_data():
+        data = []
+        log_files = os.scandir(LOG_PATH)
+        logs = dict()
+        for file in log_files:
+            if file.is_file():
+                basename = LogModule.get_base_name(file.name)
+                if not logs.get(basename):
+                    logs[basename] = dict(total_size=0, file_number=0)
+                logs[basename]['total_size'] += file.stat().st_size
+                logs[basename]['file_number'] += 1
+        for logname, info in logs.items():
+            data.append([
+                logname,
+                info['file_number'],
+                info['total_size'],
+            ])
+        data = reversed(sorted(data, key=itemgetter(2)))
+        final_data = []
+        for item in data:
+            if item[2] < LogModule.MIN_SIZE:
+                continue
+            if len(final_data) >= LogModule.MAX_ENTRIES:
+                break
+            item[2] = sizeof_fmt(item[2])
+            final_data.append(item)
+        final_data.append(["Total", sum([it[1] for it in data]), sizeof_fmt(sum([it[2] for it in data]))])
+        return final_data
+
 MODULES = Module.__subclasses__()
 
 
@@ -111,3 +156,11 @@ if __name__ == "__main__":
         plain += _plain
     message.send()
     print(plain)
+
+
+class Test(unittest.TestCase):
+    def test_log_module(self):
+        self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log'), 'fsck_apfs_error')
+        self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.gz'), 'fsck_apfs_error')
+        self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.8.bz2'), 'fsck_apfs_error')
+        self.assertEqual(LogModule.get_base_name('fsck.apfs_error.log.3.gz'), 'fsck.apfs_error')
