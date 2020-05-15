@@ -131,15 +131,16 @@ class LogModule(Module):
                 info['file_number'],
                 info['total_size'],
             ])
-        data = reversed(sorted(data, key=itemgetter(2)))
+        data = list(reversed(sorted(data, key=itemgetter(2))))
         final_data = []
         for item in data:
+            new_item = item.copy()
             if item[2] < LogModule.MIN_SIZE:
                 continue
             if len(final_data) >= LogModule.MAX_ENTRIES:
                 break
-            item[2] = sizeof_fmt(item[2])
-            final_data.append(item)
+            new_item[2] = sizeof_fmt(item[2])
+            final_data.append(new_item)
         final_data.append(["Total", sum([it[1] for it in data]), sizeof_fmt(sum([it[2] for it in data]))])
         return final_data
 
@@ -178,8 +179,14 @@ class LogModuleTest(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(LogModule.log_path)
+
     def test_get_base_name(self):
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log'), 'fsck_apfs_error')
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.gz'), 'fsck_apfs_error')
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.8.bz2'), 'fsck_apfs_error')
         self.assertEqual(LogModule.get_base_name('fsck.apfs_error.log.3.gz'), 'fsck.apfs_error')
+
+    def test_get_data(self):
+        data = LogModule.get_data()
+        self.assertEqual(data[0], ['logfile', 10, '17.6 KiB'])
+        self.assertEqual(data[1], ['Total', 10, '17.6 KiB'])
