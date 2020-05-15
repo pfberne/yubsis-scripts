@@ -167,6 +167,5 @@ Le script envoie un mail qui donne pour chaque base la dernière sauvegarde jour
   - Correction de l'envoi des mails de monitoring
   - **Mise à jour :**
     - `git pull`
-    - `git checkout v1.1`
     - Configurer `conf.py`: `LOG_PATH = "/var/log"`
 - **v1.0 :** Version initiale
