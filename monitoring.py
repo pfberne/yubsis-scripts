@@ -2,6 +2,7 @@
 import shutil
 import unittest
 import os
+import sys
 import re
 from operator import itemgetter
 try:
@@ -23,6 +24,7 @@ def sizeof_fmt(num, suffix='B'):
 class Module:
     title = None
     headers = None
+    platforms = ['linux', 'darwin']
 
     @classmethod
     def make_table(cls, data):
@@ -85,6 +87,7 @@ class DiskModule(Module):
 class AptModule(Module):
     title = 'Mises à jour'
     headers = ['Nom', 'Installé', 'Disponible']
+    platforms = ['linux']
 
     @staticmethod
     def get_data():
@@ -151,10 +154,12 @@ if __name__ == "__main__":
     message = MEmail()
     html, plain = "", ""
     for module in MODULES:
+        if sys.platform in module.platforms:
         _html, _plain = module.make_table(module.get_data())
         html += _html
         plain += _plain
-    message.send()
+        else:
+            print("[{}] module not supported on {}".format(module.title, sys.platform))
     print(plain)
 
 
