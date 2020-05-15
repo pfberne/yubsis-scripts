@@ -162,6 +162,7 @@ if __name__ == "__main__":
             print("[{}] module not supported on {}".format(module.title, sys.platform))
     print(plain)
     message.attach_all(html, plain)
+    message.send()
 
 
 class Test(unittest.TestCase):

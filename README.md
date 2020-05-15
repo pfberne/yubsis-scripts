@@ -154,14 +154,14 @@ On peut tester le bon fonctionnement du script avec `python3 -m unittest /opt/yu
 
 **Tests: Succès**
 
-Le script `/opt/yubsis-scripts/backup_check.py` permet de vérifier l'état des sauvegardes. Il est à utiliser conjointement avec `/opt/yubsis-scripts/file_rotation.py`. Une entrée crontab pour l'utilisateur `backup` est à créer : `0 18 * * 5 python3 /opt/yubsis-scripts/backup-check.py`. Cette entrée correspond à un résumé chaque vendredi à 18h. Pour choisir une autre fréquence, se référer à https://crontab.guru.
+Le script `/opt/yubsis-scripts/backup_check.py` permet de vérifier l'état des sauvegardes. Il est à utiliser conjointement avec `/opt/yubsis-scripts/file_rotation.py`. Une entrée crontab pour l'utilisateur `backup` est à créer : `0 18 * * 5 python3 /opt/yubsis-scripts/backup_check.py`. Cette entrée correspond à un résumé chaque vendredi à 18h. Pour choisir une autre fréquence, se référer à https://crontab.guru.
 
 On peut tester le bon fonctionnement du script avec `python3 -m unittest /opt/yubsis-scripts/backup_check.py`.
 
 Le script envoie un mail qui donne pour chaque base la dernière sauvegarde journalière, hebdomadaire ainsi que mensuelle, et indique une erreur si elle est trop ancienne.
 
 ## 4. Liste des changements
-- **v1.1 :**
+- **v1.1 - 2020-05-14 :**
   - Ajout du module de gestion des logs
   - Ajout de la règle `odoo-login` pour fail2ban
   - Correction de l'envoi des mails de monitoring
