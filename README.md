@@ -131,6 +131,8 @@ On pourra remarquer que tous les paquets ne sont pas mis à jour, seulement les 
 - `apt install fail2ban`
 - `/etc/fail2ban/jail.conf` est le fichier de configuration système, **à ne pas modifier**
 - `/etc/fail2ban/jail.local` est le fichier de configuration modifiable. Le modèle fonctionnel est fourni et à copier sur le serveur.
+- Pour faire fonctionner le filter `odoo-login`, copier `filter.d/odoo-login.local` vers `/etc/fail2ban/filter.d/odoo-login.local`.
+- Lancer `fail2ban-client reload` pour recharger après modification de la configuration.
 
 ## 3. Monitoring
 
