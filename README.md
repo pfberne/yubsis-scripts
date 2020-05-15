@@ -161,4 +161,12 @@ On peut tester le bon fonctionnement du script avec `python3 -m unittest /opt/JC
 Le script envoie un mail qui donne pour chaque base la dernière sauvegarde journalière, hebdomadaire ainsi que mensuelle, et indique une erreur si elle est trop ancienne.
 
 ## 4. Liste des changements
+- **v1.1 :**
+  - Ajout du module de gestion des logs
+  - Ajout de la règle `odoo-login` pour fail2ban
+  - Correction de l'envoi des mails de monitoring
+  - **Mise à jour :**
+    - `git pull`
+    - `git checkout v1.1`
+    - Configurer `conf.py`: `LOG_PATH = "/var/log"`
 - **v1.0 :** Version initiale
