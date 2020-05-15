@@ -168,4 +168,5 @@ Le script envoie un mail qui donne pour chaque base la dernière sauvegarde jour
   - **Mise à jour :**
     - `git pull`
     - Configurer `conf.py`: `LOG_PATH = "/var/log"`
+    - Reconfigurer fail2ban (voir section correspondante)
 - **v1.0 :** Version initiale
