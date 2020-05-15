@@ -140,7 +140,7 @@ On pourra remarquer que tous les paquets ne sont pas mis à jour, seulement les 
 
 **Tests: En cours**
 
-Le script `/opt/yubsis-scripts/monitoring.py` permet d'effectuer les vérifications communes à tous les serveurs. Le crontab habituel est `0 18 * * 5 python3 /opt/yubsis-scripts/backup-check.py` pour un résumé chaque vendredi à 18h.
+Le script `/opt/yubsis-scripts/monitoring.py` permet d'effectuer les vérifications communes à tous les serveurs. Le crontab habituel est `0 18 * * 5 python3 /opt/yubsis-scripts/backup_check.py` pour un résumé chaque vendredi à 18h.
 
 On peut tester le bon fonctionnement du script avec `python3 -m unittest /opt/yubsis-scripts/monitoring.py`.
 
