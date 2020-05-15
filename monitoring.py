@@ -155,9 +155,9 @@ if __name__ == "__main__":
     html, plain = "", ""
     for module in MODULES:
         if sys.platform in module.platforms:
-        _html, _plain = module.make_table(module.get_data())
-        html += _html
-        plain += _plain
+            _html, _plain = module.make_table(module.get_data())
+            html += _html
+            plain += _plain
         else:
             print("[{}] module not supported on {}".format(module.title, sys.platform))
     print(plain)
