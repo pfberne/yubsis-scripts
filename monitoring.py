@@ -103,6 +103,7 @@ class AptModule(Module):
 class LogModule(Module):
     title = 'Fichiers logs'
     headers = ['Nom', 'Nombre de fichiers', 'Taille']
+    log_path = LOG_PATH
     MAX_ENTRIES = 10
     MIN_SIZE = 1000
 
@@ -115,7 +116,7 @@ class LogModule(Module):
     @staticmethod
     def get_data():
         data = []
-        log_files = os.scandir(LOG_PATH)
+        log_files = os.scandir(LogModule.log_path)
         logs = dict()
         for file in log_files:
             if file.is_file():
@@ -165,8 +166,19 @@ if __name__ == "__main__":
     message.send()
 
 
-class Test(unittest.TestCase):
-    def test_log_module(self):
+class LogModuleTest(unittest.TestCase):
+    def setUp(self):
+        LogModule.log_path = os.path.join(os.path.dirname(__file__), "logs-test")
+        os.makedirs(LogModule.log_path, exist_ok=True)
+        for i in range(1, 10):
+            with open(os.path.join(LogModule.log_path, "logfile.log.{}.gz".format(i)), "w") as file:
+                file.write("aaaa" * i * 100)
+        with open(os.path.join(LogModule.log_path, "logfile.log"), "w") as file:
+                file.write("hey")
+
+    def tearDown(self):
+        shutil.rmtree(LogModule.log_path)
+    def test_get_base_name(self):
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log'), 'fsck_apfs_error')
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.gz'), 'fsck_apfs_error')
         self.assertEqual(LogModule.get_base_name('fsck_apfs_error.log.8.bz2'), 'fsck_apfs_error')
