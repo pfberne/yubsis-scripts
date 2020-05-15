@@ -8,3 +8,11 @@ maxretry = 3
 
 [sshd]
 enabled = true
+
+[odoo-login]
+enabled = true
+port = http,https
+bantime = 3600 ; 1h de bannissement
+maxretry = 5 ; if 5 attempts
+findtime = 7260 ; within 1 min - by default fail2ban is in local time so 1h diff # je comprends pas bien le 7260. Il semble que ce soit la durée sur laquelle fail2ban examine le log. Une durée trop longue rendrait l'analyse trop couteuse en temps et ressources.
+logpath = /var/log/odoo/odoo.log
