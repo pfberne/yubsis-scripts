@@ -138,7 +138,7 @@ On pourra remarquer que tous les paquets ne sont pas mis à jour, seulement les 
 
 ### 3.1. Divers
 
-**Tests: En cours**
+**Tests: Succès**
 
 Le script `/opt/JCS1-odoo-scripts/monitoring.py` permet d'effectuer les vérifications communes à tous les serveurs. Le crontab habituel est `0 18 * * 5 python3 /opt/JCS1-odoo-scripts/backup_check.py` pour un résumé chaque vendredi à 18h.
 
@@ -160,7 +160,24 @@ On peut tester le bon fonctionnement du script avec `python3 -m unittest /opt/JC
 
 Le script envoie un mail qui donne pour chaque base la dernière sauvegarde journalière, hebdomadaire ainsi que mensuelle, et indique une erreur si elle est trop ancienne.
 
-## 4. Liste des changements
+## 4. Gestion des log
+
+### 4.1. Journalctl
+La configuration par défaut de `journalctl` lui permet de stocker une très grande quantité de logs (ex: 4Go sur le serveur de test). On peut modifier cette limite à 200 Mo par exemple en modifiant `/etc/systemd/journald.conf` et en ajoutant la ligne `SystemMaxUse=200M` (il faut la décommenter). Si jamais les logs sont pleins avant qu'on ait effectué cette modification, on peut utiliser `journalctl --vacuum-size=200M`. Enfin, on peut vérifier la tailler utilisée avec `journalctl --disk-usage`.
+
+### 4.2. Logrotate
+Logrotate est un utilitaire pour configurer simplement la rotation des logs. C'est un outil fréquemment utilisé sous Linux, il est donc installé de base sur la machine. On peut voir que de nombreux logiciels configurent leur logrotate à leur installation: `ls /etc/logrotate.d/` :
+ - `apt`
+ - `fail2ban`
+ - `postgresql-common`
+ - `rsyslog`
+ - `unattended-upgrades`
+ - `dpkg`
+ - `rkhunter`
+ - `samba`
+Un fichier de configuration simple pour `/var/log/odoo/odoo.log` est fourni dans le projet, et est à copier dans `/etc/logrotate.d/`. Pas besoin de crontab !
+
+## 5. Liste des changements
 - **v1.1 - 2020-05-14 :**
   - Ajout du module de gestion des logs
   - Ajout de la règle `odoo-login` pour fail2ban
