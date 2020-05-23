@@ -38,5 +38,5 @@ class Email(MIMEMultipart):
         html = MIMEText(html, 'html')
         plain = MIMEText(plain, 'plain')
 
-        self.attach(html)
         self.attach(plain)
+        self.attach(html)
