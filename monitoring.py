@@ -32,28 +32,28 @@ class Module:
         Args:
             data (list(list(str))) Each line must be the same len as headers
         Returns:
-            html (str)
+            body (str)
             plain (str)
         """
-        html = "<h1>{}</h1>".format(cls.title)
+        body = "<h1>{}</h1>".format(cls.title)
         plain = cls.title + '\n' + '='*len(cls.title) + '\n'
-        html += "<table><thead><tr>"
+        body += "<table><thead><tr>"
         for header in cls.headers:
-            html += "<th>{}</th>".format(header)
+            body += "<th>{}</th>".format(header)
             plain += header + ", "
-        html += "</tr></thead><tbody>"
+        body += "</tr></thead><tbody>"
         plain += "\n"
         for line in data:
             assert len(line) == len(cls.headers)
-            html += "<tr>"
+            body += "<tr>"
             for item in line:
-                html += "<td>{}</td>".format(item)
+                body += "<td>{}</td>".format(item)
                 plain += str(item) + ", "
-            html += "</tr>"
+            body += "</tr>"
             plain += "\n"
-        html += "</tbody></table>"
+        body += "</tbody></table>"
         plain += "\n"
-        return html, plain
+        return body, plain
 
     @staticmethod
     def get_data():
@@ -154,16 +154,16 @@ class MEmail(Email):
 
 if __name__ == "__main__":
     message = MEmail()
-    html, plain = "", ""
+    body, plain = "", ""
     for module in MODULES:
         if sys.platform in module.platforms:
-            _html, _plain = module.make_table(module.get_data())
-            html += _html
+            _body, _plain = module.make_table(module.get_data())
+            body += _body
             plain += _plain
         else:
             print("[{}] module not supported on {}".format(module.title, sys.platform))
     print(plain)
-    message.attach_all(html, plain)
+    message.attach_all(body, plain)
     message.send()
 
 

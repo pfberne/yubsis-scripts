@@ -35,7 +35,7 @@ class BCEmail(Email):
         Args:
             database (Database)
         Returns:
-            html (str)
+            body (str)
             plain (str)
         """
         items = [
@@ -47,14 +47,14 @@ class BCEmail(Email):
             self.get_database_state(database)
         ]
         line = "".join(["<td>%s</td>" % str(item) for item in items])
-        html = "<tr>" + line + "</tr>"
+        body = "<tr>" + line + "</tr>"
         plain = "| ".join(["{:<30}".format(str(item)) for item in items]) + "\n"
-        return html, plain
+        return body, plain
 
     def get_summary(self):
         """
         Returns:
-            html (str)
+            body (str)
             plain (str)
         """
         headers = [
@@ -66,24 +66,24 @@ class BCEmail(Email):
             "Etat"
         ]
         headline = "".join(["<th>%s</th>" % header for header in headers])
-        html =  "<h1>Rapport de sauvegardes</h1><table><thead><tr>" + headline + "</tr></thead><tbody>"
+        body =  "<h1>Rapport de sauvegardes</h1><table><thead><tr>" + headline + "</tr></thead><tbody>"
         plain = "| ".join(["{:<30}".format(header) for header in headers]) + "\n"
         plain += "-" * (len(headers) * 32 - 2) + "\n"
         for server in os.listdir(BACKUP_ROOT_PROD):
             for name in os.listdir(os.path.join(BACKUP_ROOT_PROD, server)):
                 database = Database(server, name)
-                db_html, db_plain = self.get_database_summary(database)
-                html += db_html
+                db_body, db_plain = self.get_database_summary(database)
+                body += db_body
                 plain += db_plain
-        html += "</tbody></table>"
-        return html, plain
+        body += "</tbody></table>"
+        return body, plain
 
 
 if __name__ == "__main__":
     message = BCEmail()
     
-    html, plain = message.get_summary()
-    message.attach_all(html, plain)
+    body, plain = message.get_summary()
+    message.attach_all(body, plain)
 
     message.send()
 
