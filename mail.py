@@ -27,7 +27,7 @@ class Email(MIMEMultipart):
         for email in EMAILS:
             self['To'] = email
             client.sendmail(SENDER_EMAIL, email, self.as_string())
-        client.quit()
+        client.close()
 
     def attach_all(self, html, plain):
         """
