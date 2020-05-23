@@ -29,12 +29,24 @@ class Email(MIMEMultipart):
             client.sendmail(SENDER_EMAIL, email, self.as_string())
         client.close()
 
-    def attach_all(self, html, plain):
+    def create_html(self, body):
+        """Encapsulate body in valid html with style
+        Args:
+            body (str)
+        Returns:
+            html (str)
+        """
+        html = "<html><head><style>" + open("mail.css", "r").read() + "</style></head>"
+        html += "<body>" + body + "</body></html>"
+        return html
+
+    def attach_all(self, body, plain):
         """
         Args:
-            html (str)
+            body (str)
             plain (str)
         """
+        html = self.create_html(body)
         html = MIMEText(html, 'html')
         plain = MIMEText(plain, 'plain')
 
