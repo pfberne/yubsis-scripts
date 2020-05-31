@@ -178,6 +178,10 @@ Logrotate est un utilitaire pour configurer simplement la rotation des logs. C'e
 Un fichier de configuration simple pour `/var/log/odoo/odoo.log` est fourni dans le projet, et est à copier dans `/etc/logrotate.d/`. Pas besoin de crontab !
 
 ## 5. Liste des changements
+- **v1.3.1 - 2020-05-31 :**
+  - Correction du chemin du fichier CSS
+  - **Mise à jour :**
+    - `git pull`
 - **v1.3 - 2020-05-26 :**
   - Ajout du CSS des mails et correction de l'affichage HTML
   - **Mise à jour :**

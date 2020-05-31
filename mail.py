@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -36,7 +37,11 @@ class Email(MIMEMultipart):
         Returns:
             html (str)
         """
-        html = "<html><head><style>" + open("mail.css", "r").read() + "</style></head>"
+        css_file = open(os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            "mail.css"
+        ), "r")
+        html = "<html><head><style>" + css_file.read() + "</style></head>"
         html += "<body>" + body + "</body></html>"
         return html
 
