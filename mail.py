@@ -41,8 +41,7 @@ class Email(MIMEMultipart):
             os.path.abspath(os.path.dirname(__file__)),
             "mail.css"
         ), "r")
-        html = "<html><head><style>" + css_file.read() + "</style></head>"
-        html += "<body>" + body + "</body></html>"
+        html = "<html><body><style>" + css_file.read() + "</style>" + body + "</body></html>"
         return html
 
     def attach_all(self, body, plain):

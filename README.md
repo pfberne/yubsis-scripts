@@ -2,7 +2,7 @@
 
 ## 0. Configuration des scripts
 
-Les scripts sont disponible sur GitHub (https://github.com/martinlehoux/JCS1-odoo-scripts). On peut les déployer n'importe où sur chaque serveur, mais usuellement dans `/opt/JCS1-odoo-scripts` :
+Les scripts sont disponible sur GitHub (https://github.com/pfberne/JCS1-odoo-scripts). On peut les déployer n'importe où sur chaque serveur, mais usuellement dans `/opt/JCS1-odoo-scripts` :
 
 - `cd /opt`
 - `git clone https://github.com/pfberne/JCS1-odoo-scripts`
@@ -14,9 +14,9 @@ Il faut ensuite copier le fichier `/opt/JCS1-odoo-scripts/conf.example.py` vers 
 ```python
 # -*- coding: utf-8 -*-
 SERVER_NAME = "localhost" # Le nom du serveur pour les mails
-EMAILS = ['martin@lehoux.net'] # Les emails à qui envoyer les rapports
-SENDER_EMAIL = "sender@mail.com" # L'email from du seveur, pas besoin de modifier
-SMTP_SERVER = "mail.ikoula.fr" # Le serveur mail, pas besoin de modifier
+EMAILS = ['name@gmail.com'] # Les emails à qui envoyer les rapports
+SENDER_EMAIL = "sender@email.com" # L'email from du seveur
+SMTP_SERVER = "mail.ikoula.fr" # serveur mail, à modifier le cas échéant
 BACKUP_ROOT_PROD = '/var/backups/odoo' # L'endroit où sont stockés les backups, pas besoin de modifier en temps normal
 BACKUP_ROOT_TEST = '/var/backups/odoo/test' # Un endroit où le script peut effectuer de fausses simulations pour tester
 DISK_PARTITIONS = ['/'] # Les différentes partitions du serveur, normalement pas besoin de changer
@@ -45,9 +45,9 @@ Avant toute chose, il faut permettre au serveur Odoo d'accéder au serveur de st
 - On ajoute cette clé au fichier d'autorisation du serveur de stockage :
 - `su backup`
 - `cd ~`
-- `backup@JCS1-odoo-Stockage: nano .ssh/authorized_keys`
+- `backup@Serveur-Stockage: nano .ssh/authorized_keys`
 - Chaque ligne du fichier correspond à une clé d'un autre serveur qui peut se connecter en SSH à ce compte. Ajouter sur une nouvelle ligne le contenu de la clé publique du serveur Odoo.
-- On peut vérifier le succès avec la commande suivante depuis le serveur Odoo : `odoo@JCS1-odoo: ssh backup@179.0.196.127`
+- On peut vérifier le succès avec la commande suivante depuis le serveur Odoo : `odoo@Autre-Serveur: ssh backup@179.0.196.127`
 
 On utilise pour effectuer les sauvegardes un module Odoo : **Database Auto-Backup** qu'il faut installer pour chaque base de données de chqaue serveur.
 
@@ -178,6 +178,10 @@ Logrotate est un utilitaire pour configurer simplement la rotation des logs. C'e
 Un fichier de configuration simple pour `/var/log/odoo/odoo.log` est fourni dans le projet, et est à copier dans `/etc/logrotate.d/`. Pas besoin de crontab !
 
 ## 5. Liste des changements
+- **v1.3.2 - 2020-06-12 :**
+  - Tentative de correction du style des mails (ne doit quand même pas marche avec Gmail)
+  - **Mise à jour :**
+    - `git pull`
 - **v1.3.1 - 2020-05-31 :**
   - Correction du chemin du fichier CSS
   - **Mise à jour :**
